@@ -12,39 +12,6 @@ http.createServer((req, res) => {
 
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
 
-    // Serve static files (images, CSS, etc.)
-    if (req.method === 'GET' && pathname.startsWith('/static/')) {
-        const filePath = path.join(__dirname, pathname);
-        const extname = path.extname(filePath).toLowerCase();
-        
-        const mimeTypes = {
-            '.html': 'text/html',
-            '.js': 'text/javascript',
-            '.css': 'text/css',
-            '.png': 'image/png',
-            '.jpg': 'image/jpeg',
-            '.jpeg': 'image/jpeg',
-            '.gif': 'image/gif',
-            '.ico': 'image/x-icon',
-            '.svg': 'image/svg+xml'
-        };
-
-        const contentType = mimeTypes[extname] || 'application/octet-stream';
-
-        fs.readFile(filePath, (err, data) => {
-            if (err) {
-                console.error('File not found:', filePath);
-                res.writeHead(404);
-                res.end('File not found');
-                return;
-            }
-            
-            res.writeHead(200, { 'Content-Type': contentType });
-            res.end(data);
-        });
-        return;
-    }
-
     // Serve the HTML file for GET requests to root
     if (req.method === 'GET' && pathname === '/') {
         console.log('Serving HTML page');
